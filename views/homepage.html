@@ -1,0 +1,73 @@
+<div class="container">	
+	<div class="row">
+		<div class="col-md-12">
+			<h2>Project</h2>
+      <select name="repeatSelectProject" id="repeatSelectProject" class="form-control" ng-model="projects.model" ng-change="ajaxModeler('pages',pages);ajaxModeler('audiences',audiences);">
+	      <option ng-repeat="option in projects.availableOptions" value="{{option.id}}">{{option.name}}</option>
+    	</select>
+		</div>
+	</div>
+	<div class="row" ng-show="projects.model.length > 0">
+		<div class="col-md-3">
+			<h2>Brand</h2>
+			<select name="repeatSelectBrand" id="repeatSelectBrand" class="form-control" ng-model="brands.model">
+	      <option ng-repeat="option in brands.availableOptions" value="{{option.id}}">{{option.name}}</option>
+    	</select>
+		</div>
+		<div class="col-md-3">
+      <h2>Date</h2>
+      <div class="dropdown">
+			  <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
+			    <div class="input-group">
+			    	<input type="text" class="form-control" data-ng-model="date.dateDropDownInput">
+			    	<span class="input-group-addon">
+			    		<i class="glyphicon glyphicon-calendar"></i>
+			    	</span>
+			    </div>
+			  </a>
+			  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+			    <datetimepicker data-ng-model="date.dateDropDownInput" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+			  </ul>
+			</div>
+		</div>
+    <div class="col-md-3">
+      <h2>Page</h2>
+      <select name="repeatSelect" id="repeatSelect" class="form-control" ng-model="pages.model" ng-hide="page_id_manual">
+	      <option ng-repeat="option in pages.availableOptions" value="{{option.id}}">{{option.name}}</option>
+    	</select>
+    	<!--
+    	<br>
+  		<p>Manually enter page ID:</p>
+			<input type="text" class="form-control" id="page_id" ng-model="page_id_manual">
+  		-->
+    </div>
+    <div class="col-md-3">
+      <h2>Audiences</h2>
+      <select name="repeatSelect2" id="repeatSelect2" multiple class="form-control" ng-model="audiences.model">
+	      <option ng-repeat="option in audiences.availableOptions" value="{{option.id}}">{{option.name}}</option>
+    	</select>
+   	</div>
+  </div>
+  <div class="row">
+		<div class="col-md-12">
+			<br><br>
+      <p><a class="btn btn-primary pull-right" href="#" role="button" ng-click="getExperiments()" ng-enabled="brands.model && date.dateDropDownInput && pages.model && audiences.model" ng-hide="!audiences.model || audiences.model.length == 0">Create Link &raquo;</a></p>
+    </div>
+  </div> 
+  <div class="row">
+		<div class="col-md-12">
+		<br><br>
+			<div class="panel panel-default overflow" ng-show="final_url">
+  			<div class="panel-body">
+  				<button class="btn btn-success" ngclipboard data-clipboard-target="#wip_url">Copy URL</button><br><br>
+  				<a class="small" href="{{final_url}}" id="wip_url">{{final_url}}</a>
+  				<br><br><br>
+  				<p>Variations: </p>
+  				<tt>{{variation_ids}}</tt>
+
+  				<br>
+  				
+  			</div>	
+			</div>
+    </div>
+  </div>  

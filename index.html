@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="WebApp">
+	<head>
+		<title>Optimizely + Site Preview URL Generator</title>
+		<link rel="stylesheet" type="text/css" href="assets/external/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="assets/external/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
+		<link rel="stylesheet/less" type="text/css" href="assets/css/style.less" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.9.0/vis.min.css" rel="stylesheet" type="text/css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Optimizely & Site Preview</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li ng-class="{active: controller == 'homepage'}"><a href="#/">URL Generator</a></li>
+						<li ng-class="{active: controller == 'calendar'}"><a href="#/calendar">Calendar</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="page-content {{controller}}-container" ng-view></div>
+
+		<script src="assets/external/jquery-2.2.3.min.js" charset="utf-8"></script>
+		<script src="assets/external/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
+		<script src="assets/external/less.min.js" charset="utf-8"></script>
+		<script src="assets/external/moment.js" charset="utf-8"></script>
+		<script src="assets/external/angular/angular.min.js" charset="utf-8"></script>
+		<script src="assets/external/angular/angular-route.min.js" charset="utf-8"></script>
+		<script src="assets/external/angular/angular-local-storage.min.js" charset="utf-8"></script>
+		<script src="assets/external/ui-bootstrap-1.3.2.min.js" charset="utf-8"></script>
+		<script src="https://cdn.rawgit.com/zenorocha/clipboard.js/master/dist/clipboard.min.js"></script>
+		<script src="assets/external/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+		<script src="assets/external/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
+		<script src="assets/external/ngclipboard.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.9.0/vis.min.js"></script>
+
+
+
+
+		<script src="app/init.js" charset="utf-8"></script>
+		<script src="controllers/homepage.js" charset="utf-8"></script>
+		<script src="controllers/calendar.js" charset="utf-8"></script>
+		<script src="app/routes.js" charset="utf-8"></script>
+	</body>
+</html>
