@@ -1,5 +1,7 @@
 webApp = angular.module('WebApp', ['ngRoute', 'ui.bootstrap', 'ui.bootstrap.datetimepicker', 'ngclipboard']);
 
+
+
 webApp.run(function($rootScope) {
 	$rootScope.$on('$routeChangeSuccess', function(ev, data) {
 		if (data && data.controller) {

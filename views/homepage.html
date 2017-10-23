@@ -1,20 +1,10 @@
 <div class="container">	
 	<div class="row">
-		<div class="col-md-12">
-			<h2>Project</h2>
-      <select name="repeatSelectProject" id="repeatSelectProject" class="form-control" ng-model="projects.model" ng-change="ajaxModeler('pages',pages);ajaxModeler('audiences',audiences);">
-	      <option ng-repeat="option in projects.availableOptions" value="{{option.id}}">{{option.name}}</option>
-    	</select>
-		</div>
-	</div>
-	<div class="row" ng-show="projects.model.length > 0">
-		<div class="col-md-3">
-			<h2>Brand</h2>
-			<select name="repeatSelectBrand" id="repeatSelectBrand" class="form-control" ng-model="brands.model">
-	      <option ng-repeat="option in brands.availableOptions" value="{{option.id}}">{{option.name}}</option>
-    	</select>
-		</div>
-		<div class="col-md-3">
+		<div class="col-md-4">
+			<h2>Business Unit</h2>
+      <select class="form-control" ng-options="brand as brand.name for brand in brands.availableOptions track by brand.project_id" ng-model="brands.model"></select>
+    </div>
+		<div class="col-md-4" ng-show="brands.model">
       <h2>Date</h2>
       <div class="dropdown">
 			  <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
@@ -26,28 +16,40 @@
 			    </div>
 			  </a>
 			  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-			    <datetimepicker data-ng-model="date.dateDropDownInput" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+			    <datetimepicker data-ng-model="date.dateDropDownInput" data-on-set-time="getPages(newDate)" data-datetimepicker-config="{ startView:'day', minView:'day' }"/>
 			  </ul>
 			</div>
 		</div>
-    <div class="col-md-3">
+    <div class="col-md-4" ng-show="pages.visibility">
       <h2>Page</h2>
-      <select name="repeatSelect" id="repeatSelect" class="form-control" ng-model="pages.model" ng-hide="page_id_manual">
-	      <option ng-repeat="option in pages.availableOptions" value="{{option.id}}">{{option.name}}</option>
-    	</select>
-    	<!--
-    	<br>
-  		<p>Manually enter page ID:</p>
-			<input type="text" class="form-control" id="page_id" ng-model="page_id_manual">
-  		-->
+      <select class="form-control" ng-options="page as page.name for page in pages.availableOptions track by page.id" ng-model="pages.model" ng-change="getExperiments()"></select>
     </div>
-    <div class="col-md-3">
-      <h2>Audiences</h2>
-      <select name="repeatSelect2" id="repeatSelect2" multiple class="form-control" ng-model="audiences.model">
-	      <option ng-repeat="option in audiences.availableOptions" value="{{option.id}}">{{option.name}}</option>
-    	</select>
-   	</div>
   </div>
+  <div class="row">
+    <div class="col-md-4" ng-show="campaigns.visibility">
+      <h2>Audiences</h2>
+      <select class="form-control" ng-options="audience as audience.name for audience in audiences.availableOptions track by audience.id" ng-model="audiences.model"></select>
+    </div>
+    <div class="col-md-8" ng-show="campaigns.visibility">
+      <div ng-show="campaigns.loading">
+        <center><div class="spinner"></div></center>
+      </div>
+      <div ng-hide="campaigns.loading">  
+        <h2>Campaigns</h2>
+        <div class="panel">
+          <ul ng-repeat="x in data.campaigns">
+            <li >{{ x.name }}</li>
+            <ul ng-repeat="z in data.campaigns[$index].experiments">
+              <li>{{z.name}} |<i> start: {{z.schedule.start_time | date:'shortDate'}} end: {{z.schedule.stop_time | date:'shortDate'}}</i></li>
+              <ul ng-repeat="y in data.campaigns[$parent.$index].experiments[$index].variations" >
+                <li>{{y.name}} <input type="checkbox"></li>
+              </ul>
+            </ul>    
+          </ul> 
+        </div>  
+      </div>  
+    </div> 
+  </div>  
   <div class="row">
 		<div class="col-md-12">
 			<br><br>
@@ -60,7 +62,7 @@
 			<div class="panel panel-default overflow" ng-show="final_url">
   			<div class="panel-body">
   				<button class="btn btn-success" ngclipboard data-clipboard-target="#wip_url">Copy URL</button><br><br>
-  				<a class="small" href="{{final_url}}" id="wip_url">{{final_url}}</a>
+  				<a class="small" target="_blank" href="{{final_url}}" id="wip_url">{{final_url}}</a>
   				<br><br><br>
   				<p>Variations: </p>
   				<tt>{{variation_ids}}</tt>
