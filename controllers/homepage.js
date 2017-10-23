@@ -6,7 +6,9 @@ webApp.controller('HomepageController', ['$scope', '$uibModal', '$http', '$filte
 		$http.defaults.headers.common['Authorization'] = readCookie('optlyCred')
 	} else {
 		$http.defaults.headers.common['Authorization'] = prompt("enter API token")
-		createCookie ('optlyCred', $http.defaults.headers.common['Authorization'], 2)
+		if ($http.defaults.headers.common['Authorization'] != null) {
+			createCookie ('optlyCred', $http.defaults.headers.common['Authorization'], 2)
+		}
 	}
 	
 	
