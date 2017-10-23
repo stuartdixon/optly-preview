@@ -164,13 +164,7 @@ function readCookie(name) {
 
 				$scope.campaigns.loading = false;
 
-				
-				
 
-
-			
-
-			
 				$http.get($scope.optly_api_base+'/audiences?project_id='+$scope.brands.model.project_id)
 				.then(function(response) {
 					$scope.audiences.availableOptions.push({
@@ -186,8 +180,8 @@ function readCookie(name) {
 					$scope.audiences.visibility = true;
 					$scope.campaigns.visibility = true;
 
-
-	/*
+/*
+	
 	      for(x=0;x<response.data.length;x++) {
 	      	for(y=0;y<$scope.audiences.model.length;y++) {
 	      		if (typeof response.data[x].audience_conditions != "undefined") {
@@ -201,22 +195,29 @@ function readCookie(name) {
 	        	}	
 	      	}
 	      }
+*/
+					
+		      // create the appropriate URL
+		      $scope.getUrl = function () {
+		      	$scope.variation_ids = [];
+			      if($scope.pages.model.edit_url.match(/browse/) && !$scope.pages.model.edit_url.match(/home/)) {
+			      	var str = $scope.pages.model.edit_url;
+			      	$scope.path = str.substring(str.indexOf(".com")+4,str.length)+"&";
+			      } else if ($scope.pages.model.edit_url.match(/home/)) {
+							var str = $scope.pages.model.edit_url;
+			      	$scope.path = str.substring(str.indexOf(".com")+4,str.length)+"?";
+			      } else if ($scope.pages.model.edit_url.match(/\.gap\.com/)) {
+			      	$scope.path = "/?"
+			      }
 
-	      // create the appropriate URL
-	      if($scope.pages.model.match(/browse/) && !$scope.pages.model.match(/home/)) {
-	      	var str = $scope.pages.model;
-	      	$scope.path = str.substring(str.indexOf(".com")+4,str.length)+"&";
-	      } else if ($scope.pages.model.match(/home/)) {
-					var str = $scope.pages.model;
-	      	$scope.path = str.substring(str.indexOf(".com")+4,str.length)+"?";
-	      } else if ($scope.pages.model.match(/\.gap\.com/)) {
-	      	$scope.path = "/?"
-	      }
 
-	      $scope.brandUrl = "http://www."+getBrand($scope.projects.model)+".wip.gidapps.com"
-	      $scope.targetURL = $scope.brandUrl + $scope.path+"optimizely_token=PUBLIC&optimizely_x_audiences="+$scope.audiences.model.join(',')+"&optimizely_x="+$scope.variation_ids.join(',')
-	      $scope.final_url = $scope.brandUrl+"/preview?date="+$filter('date')($scope.date.dateDropDownInput, 'MM/dd/yyyy')+"&targetURL="+encodeURIComponent($scope.targetURL)
-	*/
+
+			      $scope.brandUrl = "http://www."+$scope.brands.wip_subdomain+".wip.gidapps.com"
+			      //$scope.targetURL = $scope.brandUrl + $scope.path+"optimizely_token=PUBLIC&optimizely_x_audiences="+$scope.audiences.model.id.join(',')+"&optimizely_x="+$scope.variation_ids.join(',')
+			      $scope.targetURL = "TBD"
+			      $scope.final_url = $scope.brandUrl+"/preview?date="+$filter('date')($scope.date.dateDropDownInput, 'MM/dd/yyyy')+"&targetURL="+encodeURIComponent($scope.targetURL)
+					}
+
 				});
 			});
     });
@@ -227,46 +228,7 @@ function readCookie(name) {
 	//$scope.pages = JSON.parse(JSON.stringify($scope.projects));
 	//$scope.audiences = JSON.parse(JSON.stringify($scope.projects));
 	//$scope.campaigns = JSON.parse(JSON.stringify($scope.projects));
-
-
-
-	$scope.ajaxModeler = function(api_endpoint, multi_select) {
-		$http.get($scope.optly_api_base+'/'+api_endpoint+'?project_id='+$scope.projects.model)
-    	.then(function(response) {
-	      multi_select.availableOptions = []; // wipe out old options
-				if(api_endpoint == 'pages') {
-					for(x=0;x<response.data.length;x++) {
-						multi_select.availableOptions.push({
-							id : response.data[x].edit_url,
-							name : response.data[x].name
-						})
-					}
-				} else if(api_endpoint == 'campaigns') {
-					for(x=0;x<response.data.length;x++) {
-						multi_select.availableOptions.push({
-							id : response.data[x].edit_url,
-							name : response.data[x].name
-						})
-					}
-				} else {	
-					for(x=0;x<response.data.length;x++) {
-						multi_select.availableOptions.push({
-							id : response.data[x].id,
-							name : response.data[x].name
-						})
-					}
-				}
-				if(api_endpoint == 'audiences') {
-					multi_select.availableOptions.push({
-						id : '1',
-						name : 'Everyone (unrecognized)'
-					})
-				}	
-  	});  
-	}
-
- 
     
-	$scope.variation_ids = [];
+	
 
 }]);

@@ -53,7 +53,7 @@
   <div class="row">
 		<div class="col-md-12">
 			<br><br>
-      <p><a class="btn btn-primary pull-right" href="#" role="button" ng-click="getExperiments()" ng-enabled="brands.model && date.dateDropDownInput && pages.model && audiences.model" ng-hide="!audiences.model || audiences.model.length == 0">Create Link &raquo;</a></p>
+      <p><a class="btn btn-primary pull-right" href="#" role="button" ng-click="getUrl()" ng-enabled="brands.model && date.dateDropDownInput && pages.model && audiences.model" ng-hide="!audiences.model || audiences.model.length == 0">Create Link &raquo;</a></p>
     </div>
   </div> 
   <div class="row">
@@ -63,12 +63,6 @@
   			<div class="panel-body">
   				<button class="btn btn-success" ngclipboard data-clipboard-target="#wip_url">Copy URL</button><br><br>
   				<a class="small" target="_blank" href="{{final_url}}" id="wip_url">{{final_url}}</a>
-  				<br><br><br>
-  				<p>Variations: </p>
-  				<tt>{{variation_ids}}</tt>
-
-  				<br>
-  				
   			</div>	
 			</div>
     </div>
