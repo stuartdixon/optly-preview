@@ -89,10 +89,13 @@ webApp.controller('HomepageController', ['$scope', '$uibModal', '$http', '$filte
   	});	
 	}
 
+
  $scope.getExperiments = function() {
- 	$scope.campaigns.visibility = true;
- 	$scope.campaigns.loading = true;
- 	$scope.audiences.availableOptions = [];
+	 	$scope.campaigns.visibility = true;
+	 	$scope.campaigns.loading = true;
+	 	$scope.audiences.availableOptions = [];
+	 	$scope.final_url = ""
+	 	
 
 	$http.get($scope.optly_api_base+'/campaigns?project_id='+$scope.brands.model.project_id)
     .then(function(response) {

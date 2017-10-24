@@ -7,7 +7,7 @@
 	<div class="row">
 		<div class="col-md-4">
 			<h2>Business Unit</h2>
-      <select class="form-control" ng-options="brand as brand.name for brand in brands.availableOptions track by brand.project_id" ng-model="brands.model"></select>
+      <select class="form-control" ng-options="brand as brand.name for brand in brands.availableOptions track by brand.project_id" ng-model="brands.model" ng-change="reset()"></select>
     </div>
 		<div class="col-md-4" ng-show="brands.model">
       <h2>Date</h2>
