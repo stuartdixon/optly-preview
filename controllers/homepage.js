@@ -11,29 +11,28 @@ webApp.controller('HomepageController', ['$scope', '$uibModal', '$http', '$filte
 		}
 	}
 	
-	
+	function createCookie(name,value,days) {
+	    var expires = "";
+	    if (days) {
+	        var date = new Date();
+	        date.setTime(date.getTime() + (days*24*60*60*1000));
+	        expires = "; expires=" + date.toUTCString();
+	    }
+	    document.cookie = name + "=" + value + expires + "; path=/";
+	}
 
-function createCookie(name,value,days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + value + expires + "; path=/";
-}
+	function readCookie(name) {
+	    var nameEQ = name + "=";
+	    var ca = document.cookie.split(';');
+	    for(var i=0;i < ca.length;i++) {
+	        var c = ca[i];
+	        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+	        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	    }
+	    return null;
+	}
 
-function readCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
-}
-
+	$scope.variation_ids = [];
 	$scope.brands = {
 		model: null,
 		availableOptions : [{
@@ -117,7 +116,7 @@ function readCookie(name) {
 
 	  	$http.get($scope.optly_api_base+'/experiments?project_id='+$scope.brands.model.project_id)
 	    .then(function(response) {
-	    	console.log(response.data)
+	    	
 	    	final_array = []
 				for(x=0;x<response.data.length;x++) {
 					
@@ -133,7 +132,7 @@ function readCookie(name) {
 						var target_date = new Date($scope.date.dateDropDownInput);
 						if(target_date <= start || target_date >= end) {
 							
-							console.log(response.data[x].name+" was removed because target "+target_date+" was not in range of "+start+" to "+end)
+							
 						} else {
 							final_array.push(response.data[x])
 						}
@@ -143,7 +142,7 @@ function readCookie(name) {
 				}
 
 				$scope.data.experiments = final_array
-				console.log(final_array)
+				
 
 				//assoc
 				
@@ -198,10 +197,14 @@ function readCookie(name) {
 	      	}
 	      }
 */
-					
+					$scope.$watchCollection( 'variation_ids', function(newVal){
+        		for( var i = 0; i < newVal.length; ++i ) {
+        		console.log(newVal[i]); 
+        		}
+    			});
 		      // create the appropriate URL
 		      $scope.getUrl = function () {
-		      	$scope.variation_ids = [];
+		      	
 			      if($scope.pages.model.edit_url.match(/browse/) && !$scope.pages.model.edit_url.match(/home/)) {
 			      	var str = $scope.pages.model.edit_url;
 			      	$scope.path = str.substring(str.indexOf(".com")+4,str.length)+"&";
@@ -214,9 +217,9 @@ function readCookie(name) {
 
 
 
-			      $scope.brandUrl = "http://www."+$scope.brands.wip_subdomain+".wip.gidapps.com"
-			      //$scope.targetURL = $scope.brandUrl + $scope.path+"optimizely_token=PUBLIC&optimizely_x_audiences="+$scope.audiences.model.id.join(',')+"&optimizely_x="+$scope.variation_ids.join(',')
-			      $scope.targetURL = "TBD"
+			      $scope.brandUrl = "http://www."+$scope.brands.model.wip_subdomain+".wip.gidapps.com"
+			      $scope.targetURL = $scope.brandUrl + $scope.path+"optimizely_token=PUBLIC&optimizely_x_audiences="+$scope.audiences.model.join(',')+"&optimizely_x="+$scope.variation_ids.join(',')
+			      //$scope.targetURL = "TBD"
 			      $scope.final_url = $scope.brandUrl+"/preview?date="+$filter('date')($scope.date.dateDropDownInput, 'MM/dd/yyyy')+"&targetURL="+encodeURIComponent($scope.targetURL)
 					}
 

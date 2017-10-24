@@ -27,8 +27,15 @@
   </div>
   <div class="row">
     <div class="col-md-4" ng-show="campaigns.visibility">
-      <h2>Audiences</h2>
-      <select class="form-control" ng-options="audience as audience.name for audience in audiences.availableOptions track by audience.id" ng-model="audiences.model"></select>
+      <div ng-show="campaigns.loading">
+        <center><div class="spinner"></div></center>
+      </div>
+      <div ng-hide="campaigns.loading">
+        <h2>Audiences</h2>
+        <select class="form-control" name="ngvalueselect" ng-model="audiences.model" multiple>
+          <option ng-repeat="audience in audiences.availableOptions" ng-value="audience.id">{{audience.name}}</option>
+        </select>
+      </div>
     </div>
     <div class="col-md-8" ng-show="campaigns.visibility">
       <div ng-show="campaigns.loading">
@@ -42,7 +49,7 @@
             <ul ng-repeat="z in data.campaigns[$index].experiments">
               <li>{{z.name}} |<i> start: {{z.schedule.start_time | date:'shortDate'}} end: {{z.schedule.stop_time | date:'shortDate'}}</i></li>
               <ul ng-repeat="y in data.campaigns[$parent.$index].experiments[$index].variations" >
-                <li>{{y.name}} <input type="checkbox"></li>
+                <li>{{y.name}} | Select for inclusion: <input ng-true-value="{{y.variation_id}}" ng-false-value="{{undefined}}" ng-model="variation_ids[$index]" type="checkbox"></li>
               </ul>
             </ul>    
           </ul> 
