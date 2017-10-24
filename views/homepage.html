@@ -1,4 +1,9 @@
-<div class="container">	
+<div class="container" ng-show="error">
+  <div class="alert alert-danger">
+  <strong>Oh snap!</strong> {{error_message}}
+</div>
+</div>
+<div class="container" ng-hide="error">	
 	<div class="row">
 		<div class="col-md-4">
 			<h2>Business Unit</h2>
@@ -56,11 +61,8 @@
         </div>  
       </div>  
     </div> 
-  </div>  
-  <div class="row">
 		<div class="col-md-12">
-			<br><br>
-      <p><a class="btn btn-primary pull-right" href="#" role="button" ng-click="getUrl()" ng-enabled="brands.model && date.dateDropDownInput && pages.model && audiences.model" ng-hide="!audiences.model || audiences.model.length == 0">Create Link &raquo;</a></p>
+      <p><a class="btn btn-primary input-block-level form-control" href="#" role="button" ng-click="getUrl()" ng-enabled="brands.model && date.dateDropDownInput && pages.model && audiences.model" ng-hide="!audiences.model || audiences.model.length == 0">Create Link &raquo;</a></p>
     </div>
   </div> 
   <div class="row">
