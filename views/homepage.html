@@ -3,14 +3,17 @@
   <strong>Oh snap!</strong> {{error_message}}
 </div>
 </div>
-<div class="container" ng-hide="error">	
+<div class="container" ng-hide="error">
+  <div class="row">
+    This tool will provide a link to a page in WIP with variations across multiple experiments applied.
+  </div>	
 	<div class="row">
 		<div class="col-md-4">
-			<h2>Business Unit</h2>
+			<h3>Business Unit</h3>
       <select class="form-control" ng-options="brand as brand.name for brand in brands.availableOptions track by brand.project_id" ng-model="brands.model" ng-change="reset()"></select>
     </div>
 		<div class="col-md-4" ng-show="brands.model">
-      <h2>Date</h2>
+      <h3>Date</h3>
       <div class="dropdown">
 			  <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
 			    <div class="input-group">
@@ -26,41 +29,68 @@
 			</div>
 		</div>
     <div class="col-md-4" ng-show="pages.visibility">
-      <h2>Page</h2>
-      <select class="form-control" ng-options="page as page.name for page in pages.availableOptions track by page.id" ng-model="pages.model" ng-change="getExperiments()"></select>
-    </div>
+      <div ng-show="pages.loading">
+        <center><div class="spinner"></div></center>
+      </div>
+      <div ng-hide="pages.loading">
+        <h3>Page</h3>
+        <select class="form-control" ng-options="page as page.name for page in pages.availableOptions track by page.id" ng-model="pages.model" ng-change="getExperiments()"></select>
+      </div>
+    </div>  
   </div>
   <div class="row">
+    <div class="col-md-8" ng-show="campaigns.visibility">
+      <div ng-show="campaigns.loading">
+        <center><div class="spinner"></div></center>
+      </div>
+      <div ng-hide="campaigns.loading" class="col-md-6">
+        <h3>Personalization Campaigns</h3>
+        <ul ng-repeat="x in data.campaigns">
+          <li >{{ x.name }}</li>
+          <ul ng-repeat="z in data.campaigns[$index].experiments">
+            <li>{{z.name}} |<i> start: {{z.schedule.start_time | date:'shortDate'}} end: {{z.schedule.stop_time | date:'shortDate'}}</i></li>
+            <ul ng-repeat="y in data.campaigns[$parent.$index].experiments[$index].variations">
+              <li>{{y.name}} | Select for inclusion: 
+                <input 
+                  ng-true-value="{{y.variation_id}}" 
+                  ng-false-value="{{undefined}}"
+                  ng-model="variation_ids.experiences[$parent.$parent.$index]" 
+                  name="variation-group-{{$parent.$parent.$index}}" 
+                  type="checkbox"
+                /></li>
+            </ul>
+          </ul>    
+        </ul>
+      </div>
+      <div ng-hide="campaigns.loading" ng-show="data.abtests" class="col-md-6">   
+        <h3>A/B Tests</h3>
+        <ul ng-repeat="x in data.abtests">
+          <li >{{ x.name }}</li>
+          <ul ng-repeat="y in data.abtests[$index].variations" >
+            <li>{{y.name}} | Select for inclusion: 
+              <input 
+                ng-true-value="{{y.variation_id}}" 
+                ng-false-value="{{undefined}}" 
+                ng-model="variation_ids.experiments[$parent.$index]" 
+                type="checkbox"
+              /></li>
+          </ul>
+        </ul> 
+      </div>
+    </div> 
     <div class="col-md-4" ng-show="campaigns.visibility">
       <div ng-show="campaigns.loading">
         <center><div class="spinner"></div></center>
       </div>
       <div ng-hide="campaigns.loading">
-        <h2>Audiences</h2>
+        <h3>Audiences</h3>
         <select class="form-control" name="ngvalueselect" ng-model="audiences.model" multiple>
           <option ng-repeat="audience in audiences.availableOptions" ng-value="audience.id">{{audience.name}}</option>
         </select>
       </div>
     </div>
-    <div class="col-md-8" ng-show="campaigns.visibility">
-      <div ng-show="campaigns.loading">
-        <center><div class="spinner"></div></center>
-      </div>
-      <div ng-hide="campaigns.loading">  
-        <h2>Campaigns</h2>
-        <div class="panel">
-          <ul ng-repeat="x in data.campaigns">
-            <li >{{ x.name }}</li>
-            <ul ng-repeat="z in data.campaigns[$index].experiments">
-              <li>{{z.name}} |<i> start: {{z.schedule.start_time | date:'shortDate'}} end: {{z.schedule.stop_time | date:'shortDate'}}</i></li>
-              <ul ng-repeat="y in data.campaigns[$parent.$index].experiments[$index].variations" >
-                <li>{{y.name}} | Select for inclusion: <input ng-true-value="{{y.variation_id}}" ng-false-value="{{undefined}}" ng-model="variation_ids[$index]" type="checkbox"></li>
-              </ul>
-            </ul>    
-          </ul> 
-        </div>  
-      </div>  
-    </div> 
+  </div>
+  <div class="row">
 		<div class="col-md-12">
       <p><a class="btn btn-primary input-block-level form-control" href="#" role="button" ng-click="getUrl()" ng-enabled="brands.model && date.dateDropDownInput && pages.model && audiences.model" ng-hide="!audiences.model || audiences.model.length == 0">Create Link &raquo;</a></p>
     </div>
