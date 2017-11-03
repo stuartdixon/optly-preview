@@ -5,23 +5,23 @@ webApp.controller('HomepageController', ['$scope', '$uibModal', '$http', '$filte
   $http.defaults.headers.common['Authorization'] = ""
 
 
-  // This section collects 
+  // This section collects the API token
   if (readCookie('optly_api_token')) {
     $http.defaults.headers.common['Authorization'] = readCookie('optly_api_token')
   } else {
     $http.defaults.headers.common['Authorization'] = prompt("enter API token")
     if ($http.defaults.headers.common['Authorization'] != null && $http.defaults.headers.common['Authorization'].length != 0) {
-      createCookie('optly_api_token', $http.defaults.headers.common['Authorization'], 2)
+      createCookie('optly_api_token', $http.defaults.headers.common['Authorization'], 365)
     } else {
       $scope.error = true;
       $scope.error_message = "You need to enter a personal optimizely token. Details: https://developers.optimizely.com/x/authentication/personal-token/"
     }
   }
 
-   $scope.variation_ids = {
-    experiences : [],
-    experiments : []
-   }
+  $scope.variation_ids = {
+    experiences: [],
+    experiments: []
+  }
 
   $scope.brands = {
     model: null,
@@ -217,7 +217,7 @@ webApp.controller('HomepageController', ['$scope', '$uibModal', '$http', '$filte
                   console.log(variations)
 
                   $scope.brandUrl = "http://www." + $scope.brands.model.wip_subdomain + ".wip.gidapps.com"
-                  $scope.targetURL = $scope.brandUrl + $scope.path + "optimizely_token=PUBLIC&optimizely_x_audiences=" + $scope.audiences.model.join(',') + "&optimizely_x=" + variations
+                  $scope.targetURL = $scope.brandUrl + $scope.path + "optimizely_token=PUBLIC&optimizely_x_audiences=" + $scope.audiences.model.join(',') + "&optimizely_x=" + variations + "&optimizely_preview_mode_CAMPAIGN=" + $scope.data.campaigns[0].id
                   $scope.final_url = $scope.brandUrl + "/preview?date=" + $filter('date')($scope.date.dateDropDownInput, 'MM/dd/yyyy') + "&targetURL=" + encodeURIComponent($scope.targetURL)
                 }
 
